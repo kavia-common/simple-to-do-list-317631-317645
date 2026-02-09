@@ -10,6 +10,32 @@ import "./App.css";
  */
 
 const STORAGE_KEY = "kavia.todo.tasks.v1";
+const THEME_STORAGE_KEY = "kavia.todo.theme.v1";
+
+/**
+ * Load theme preference from localStorage.
+ * @returns {"light" | "dark"}
+ */
+function loadThemeFromStorage() {
+  try {
+    const raw = localStorage.getItem(THEME_STORAGE_KEY);
+    return raw === "dark" ? "dark" : "light";
+  } catch {
+    return "light";
+  }
+}
+
+/**
+ * Persist theme preference to localStorage (best-effort).
+ * @param {"light" | "dark"} theme
+ */
+function saveThemeToStorage(theme) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // Ignore storage errors
+  }
+}
 
 /**
  * Create a reasonably unique id without extra dependencies.
@@ -62,14 +88,22 @@ function App() {
   const [newTitle, setNewTitle] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
+  const [theme, setTheme] = useState(() => loadThemeFromStorage());
 
   const inputRef = useRef(null);
   const editInputRef = useRef(null);
 
-  // Persist on change
+  // Persist tasks on change
   useEffect(() => {
     saveTasksToStorage(tasks);
   }, [tasks]);
+
+  // Persist + apply theme on change
+  useEffect(() => {
+    saveThemeToStorage(theme);
+    // Apply theme at the document level so all CSS can key off it.
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   // Autofocus the add input on first load for quick entry
   useEffect(() => {
@@ -161,6 +195,11 @@ function App() {
     setTasks((prev) => prev.filter((t) => !t.completed));
   };
 
+  // PUBLIC_INTERFACE
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
   const onNewKeyDown = (e) => {
     if (e.key === "Enter") addTask();
   };
@@ -184,6 +223,16 @@ function App() {
         </div>
 
         <div className="headerActions">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          >
+            Theme: {theme === "dark" ? "Dark" : "Light"}
+          </button>
+
           <button
             type="button"
             className="btn btn-secondary"

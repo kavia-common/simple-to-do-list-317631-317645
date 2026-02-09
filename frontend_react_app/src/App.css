@@ -1,4 +1,4 @@
-/* Modern light theme — per style guide */
+/* Theme tokens (default = light) */
 :root {
   --bg: #f9fafb;
   --surface: #ffffff;
@@ -18,6 +18,25 @@
   --radius-sm: 10px;
 
   --ring: 0 0 0 4px rgba(59, 130, 246, 0.18);
+}
+
+/* Dark theme overrides */
+html[data-theme="dark"] {
+  --bg: #0b1220;
+  --surface: #101b2f;
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.64);
+
+  --primary: #60a5fa;
+  --success: #22d3ee;
+  --danger: #f87171;
+
+  --border: rgba(255, 255, 255, 0.12);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 18px 45px rgba(0, 0, 0, 0.45);
+
+  --ring: 0 0 0 4px rgba(96, 165, 250, 0.22);
 }
 
 *,
@@ -128,7 +147,7 @@
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--surface);
   color: var(--text);
   outline: none;
   transition: box-shadow 120ms ease, border-color 120ms ease, transform 120ms ease;
@@ -230,7 +249,7 @@
   padding: 12px 10px;
   border-radius: 14px;
   border: 1px solid rgba(229, 231, 235, 0.7);
-  background: #fff;
+  background: var(--surface);
   transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -297,6 +316,55 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+html[data-theme="dark"] .label {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+html[data-theme="dark"] .input::placeholder {
+  color: rgba(255, 255, 255, 0.46);
+}
+
+html[data-theme="dark"] .taskItem {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .taskItem:hover {
+  border-color: rgba(96, 165, 250, 0.35);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] .taskTitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-theme="dark"] .taskItem.completed .taskTitle {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+html[data-theme="dark"] .iconBtn {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+html[data-theme="dark"] .iconBtn:hover {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+html[data-theme="dark"] .btn-secondary {
+  background: rgba(96, 165, 250, 0.14);
+  border-color: rgba(96, 165, 250, 0.22);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+html[data-theme="dark"] .btn-secondary:hover:not(:disabled) {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+html[data-theme="dark"] .btn-ghost {
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .taskItem.completed .taskTitle {
